@@ -8,3 +8,25 @@
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
+
+# Sensitive files
+/.env
+/.env.*
+!/.env.example
+!/.env.dist
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+*.csr
+*.der
+*.ovpn
+*.kdbx
+secrets*.yml
+secrets*.yaml
+credentials*.json
+google-services.json
+auth.json
+phpunit.xml
