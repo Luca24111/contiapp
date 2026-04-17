@@ -1,0 +1,7 @@
+<article class="summary-card summary-card--{{ variant|default('neutral') }}">
+    <div class="summary-card__label">{{ label }}</div>
+    <div class="summary-card__value">{{ value|number_format(2, ',', '.') }} €</div>
+    {% if meta is defined and meta %}
+        <div class="summary-card__meta">{{ meta }}</div>
+    {% endif %}
+</article>

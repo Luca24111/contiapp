@@ -1,0 +1,222 @@
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    padding: 0.82rem 1.15rem;
+    border: 0;
+    border-radius: 999px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+}
+
+.button:hover {
+    transform: translateY(-1px);
+}
+
+.button.is-disabled,
+.button:disabled {
+    opacity: 0.45;
+    pointer-events: none;
+}
+
+.button--primary {
+    color: #fff;
+    background: linear-gradient(135deg, #0f172a, #1d4ed8);
+    box-shadow: 0 14px 30px rgba(29, 78, 216, 0.2);
+}
+
+.button--ghost {
+    color: var(--color-neutral);
+    background: rgba(148, 163, 184, 0.12);
+}
+
+.button--danger {
+    color: #fff;
+    background: linear-gradient(135deg, #dc2626, #ef4444);
+}
+
+.button--small {
+    padding: 0.6rem 0.9rem;
+    font-size: 0.88rem;
+}
+
+.button--block {
+    width: 100%;
+}
+
+.button--quick {
+    min-height: 3.35rem;
+    border: 1px solid transparent;
+    border-radius: 1rem;
+    font-size: 0.98rem;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+    box-shadow: none;
+}
+
+.button--quick:hover {
+    transform: translateY(-1px);
+}
+
+.button--quick:focus-visible {
+    outline: 3px solid rgba(255, 255, 255, 0.22);
+    outline-offset: 2px;
+}
+
+.button--quick-primary {
+    color: #0f172a;
+    background: #f8fafc;
+    border-color: rgba(255, 255, 255, 0.24);
+}
+
+.button--quick-primary:hover {
+    background: #ffffff;
+    border-color: rgba(255, 255, 255, 0.45);
+}
+
+.button--quick-secondary {
+    color: #ffffff;
+    background: rgba(14, 165, 233, 0.22);
+    border-color: rgba(56, 189, 248, 0.55);
+}
+
+.button--quick-secondary:hover {
+    background: rgba(14, 165, 233, 0.34);
+    border-color: rgba(125, 211, 252, 0.8);
+}
+
+.summary-card {
+    position: relative;
+    overflow: hidden;
+    padding: 1.45rem;
+    border-radius: var(--radius-md);
+    background: var(--bg-panel-strong);
+    box-shadow: var(--shadow-soft);
+}
+
+.summary-card::after {
+    content: "";
+    position: absolute;
+    inset: auto -1.2rem -1.2rem auto;
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    opacity: 0.12;
+}
+
+.summary-card--income::after {
+    background: var(--color-income);
+}
+
+.summary-card--expense::after {
+    background: var(--color-expense);
+}
+
+.summary-card--neutral::after {
+    background: var(--color-accent);
+}
+
+.summary-card__label {
+    margin-bottom: 0.8rem;
+    font-size: 0.9rem;
+    color: var(--color-muted);
+}
+
+.summary-card__value {
+    font-size: clamp(1.7rem, 4vw, 2.3rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+}
+
+.summary-card__meta {
+    margin-top: 0.6rem;
+    color: var(--color-muted);
+}
+
+.chart-card {
+    padding: 1.5rem;
+    border-radius: var(--radius-lg);
+    background: var(--bg-panel-strong);
+    box-shadow: var(--shadow-soft);
+}
+
+.chart-card__header {
+    margin-bottom: 1rem;
+}
+
+.chart-card__header h3 {
+    margin-bottom: 0.35rem;
+    font-size: 1.2rem;
+}
+
+.chart-card__header p {
+    color: var(--color-muted);
+}
+
+.chart-card__body {
+    position: relative;
+    min-height: 320px;
+}
+
+.chart-card__loader {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    color: var(--color-muted);
+    background: linear-gradient(135deg, rgba(241, 245, 249, 0.8), rgba(255, 255, 255, 0.35));
+    border-radius: var(--radius-md);
+}
+
+.chart-card.is-ready .chart-card__loader {
+    display: none;
+}
+
+.category-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.45rem 0.8rem;
+    border-radius: 999px;
+    background: rgba(148, 163, 184, 0.12);
+    font-weight: 600;
+}
+
+.category-badge__dot {
+    width: 0.8rem;
+    height: 0.8rem;
+    border-radius: 50%;
+}
+
+.type-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.42rem 0.72rem;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.type-badge--income {
+    color: #166534;
+    background: rgba(34, 197, 94, 0.14);
+}
+
+.type-badge--expense {
+    color: #991b1b;
+    background: rgba(239, 68, 68, 0.14);
+}
+
+.amount {
+    font-weight: 800;
+}
+
+.amount--income {
+    color: var(--color-income);
+}
+
+.amount--expense {
+    color: var(--color-expense);
+}

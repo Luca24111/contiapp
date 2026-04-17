@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nuova categoria | ContiApp{% endblock %}
+{% block page_title %}Nuova categoria{% endblock %}
+{% block page_subtitle %}Crea una nuova classificazione per organizzare le tue transazioni.{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/forms.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/categories.css') }}">
+{% endblock %}
+
+{% block body %}
+    <section class="panel panel--form">
+        <div class="panel__header">
+            <div>
+                <h2>Definizione categoria</h2>
+                <p>Usa un colore distintivo per migliorare la leggibilità dei report.</p>
+            </div>
+        </div>
+
+        {% include 'category/_form.html.twig' with {form: form, submit_label: 'Salva categoria'} %}
+    </section>
+{% endblock %}

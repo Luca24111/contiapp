@@ -1,0 +1,16 @@
+{{ form_start(form, {attr: {class: 'app-form', 'data-transaction-form': 'true'}}) }}
+    <div class="form-grid">
+        {{ form_row(form.type) }}
+        {{ form_row(form.category) }}
+        {{ form_row(form.amount) }}
+        {{ form_row(form.date) }}
+        <div class="form-grid__full">
+            {{ form_row(form.description) }}
+        </div>
+    </div>
+
+    <div class="form-actions">
+        <a class="button button--ghost" href="{{ path('app_transactions_index') }}">Annulla</a>
+        <button class="button button--primary" type="submit">{{ submit_label }}</button>
+    </div>
+{{ form_end(form) }}

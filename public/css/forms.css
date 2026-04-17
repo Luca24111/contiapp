@@ -1,0 +1,68 @@
+.app-form {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.1rem;
+}
+
+.form-grid__full {
+    grid-column: 1 / -1;
+}
+
+.app-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+}
+
+.app-form input,
+.app-form select,
+.app-form textarea,
+.filters-grid input,
+.filters-grid select {
+    width: 100%;
+    padding: 0.95rem 1rem;
+    border: 1px solid rgba(148, 163, 184, 0.35);
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.92);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.app-form input:focus,
+.app-form select:focus,
+.app-form textarea:focus,
+.filters-grid input:focus,
+.filters-grid select:focus {
+    outline: none;
+    border-color: rgba(14, 165, 233, 0.9);
+    box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.12);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.9rem;
+}
+
+.form-error-message,
+.app-form ul {
+    margin: 0.4rem 0 0;
+    padding: 0;
+    list-style: none;
+    color: #b91c1c;
+    font-size: 0.88rem;
+}
+
+@media (max-width: 720px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+}

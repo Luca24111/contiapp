@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nuova transazione | ContiApp{% endblock %}
+{% block page_title %}Nuova transazione{% endblock %}
+{% block page_subtitle %}Registra un nuovo movimento di entrata o uscita.{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/forms.css') }}">
+{% endblock %}
+
+{% block body %}
+    <section class="panel panel--form">
+        <div class="panel__header">
+            <div>
+                <h2>Dettagli movimento</h2>
+                <p>La categoria selezionata determina automaticamente il tipo salvato.</p>
+            </div>
+        </div>
+
+        {% include 'transaction/_form.html.twig' with {form: form, submit_label: 'Salva transazione'} %}
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/transaction-form.js') }}"></script>
+{% endblock %}

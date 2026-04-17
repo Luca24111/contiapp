@@ -1,0 +1,121 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard | ContiApp{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+{% block page_subtitle %}Vista del mese corrente con saldo, categorie più impattanti e andamento recente.{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/transactions.css') }}">
+{% endblock %}
+
+{% block body %}
+    <section class="dashboard-grid">
+        {% include 'components/_summary_card.html.twig' with {
+            label: 'Entrate del mese',
+            value: summary.income,
+            meta: 'Flusso positivo corrente',
+            variant: 'income'
+        } %}
+        {% include 'components/_summary_card.html.twig' with {
+            label: 'Uscite del mese',
+            value: summary.expense,
+            meta: 'Spese registrate nel periodo',
+            variant: 'expense'
+        } %}
+        {% include 'components/_summary_card.html.twig' with {
+            label: 'Saldo del mese',
+            value: summary.balance,
+            meta: 'Differenza netta tra entrate e uscite',
+            variant: summary.balance >= 0 ? 'neutral' : 'expense'
+        } %}
+    </section>
+
+    <section class="dashboard-charts">
+        {% include 'components/_chart_container.html.twig' with {
+            id: 'dashboard-monthly-comparison',
+            title: 'Ultimi 6 mesi',
+            subtitle: 'Confronto mensile tra entrate e uscite',
+            chart_config: {
+                type: 'bar',
+                data: monthlyComparisonChart,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { callback: 'currency' }
+                        }
+                    }
+                }
+            }
+        } %}
+
+        {% include 'components/_chart_container.html.twig' with {
+            id: 'dashboard-expense-distribution',
+            title: 'Distribuzione spese',
+            subtitle: 'Ripartizione per categoria nel mese corrente',
+            chart_config: {
+                type: 'doughnut',
+                data: expenseDistributionChart,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '62%',
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                afterLabel: 'expenseShareOfTotal'
+                            }
+                        },
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            }
+        } %}
+    </section>
+
+    <section class="panel">
+        <div class="panel__header">
+            <div>
+                <h2>Movimenti recenti</h2>
+                <p>Ultime registrazioni del mese in corso.</p>
+            </div>
+            <a class="button button--ghost" href="{{ path('app_transactions_index') }}">Vedi tutto</a>
+        </div>
+
+        <div class="table-wrapper">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Descrizione</th>
+                        <th>Data</th>
+                        <th>Categoria</th>
+                        <th>Tipo</th>
+                        <th>Importo</th>
+                        <th>Azioni</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for transaction in recentTransactions %}
+                        {% include 'components/_transaction_row.html.twig' with {transaction: transaction} %}
+                    {% else %}
+                        <tr>
+                            <td colspan="6" class="empty-state">Nessuna transazione registrata nel mese corrente.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('vendor/chartjs/chart.umd.min.js') }}"></script>
+    <script src="{{ asset('js/charts.js') }}"></script>
+    <script src="{{ asset('js/confirm-delete.js') }}"></script>
+{% endblock %}

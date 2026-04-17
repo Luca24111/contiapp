@@ -1,0 +1,18 @@
+{{ form_start(form, {
+    action: action|default(null),
+    attr: {class: form_class|default('app-form')}
+}) }}
+    <div class="form-grid">
+        {{ form_row(form.name) }}
+        {{ form_row(form.type) }}
+        {{ form_row(form.color) }}
+        {{ form_row(form.icon) }}
+    </div>
+
+    <div class="form-actions">
+        {% if show_cancel|default(true) %}
+            <a class="button button--ghost" href="{{ cancel_path|default(path('app_categories_index')) }}">{{ cancel_label|default('Annulla') }}</a>
+        {% endif %}
+        <button class="button button--primary" type="submit">{{ submit_label }}</button>
+    </div>
+{{ form_end(form) }}

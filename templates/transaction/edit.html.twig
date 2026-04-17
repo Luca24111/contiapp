@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifica transazione | ContiApp{% endblock %}
+{% block page_title %}Modifica transazione{% endblock %}
+{% block page_subtitle %}Aggiorna importo, descrizione, data o categoria del movimento.{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/forms.css') }}">
+{% endblock %}
+
+{% block body %}
+    <section class="panel panel--form">
+        <div class="panel__header">
+            <div>
+                <h2>Movimento #{{ transaction.id }}</h2>
+                <p>Le modifiche vengono salvate immediatamente sul database.</p>
+            </div>
+        </div>
+
+        {% include 'transaction/_form.html.twig' with {form: form, submit_label: 'Aggiorna transazione'} %}
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/transaction-form.js') }}"></script>
+{% endblock %}

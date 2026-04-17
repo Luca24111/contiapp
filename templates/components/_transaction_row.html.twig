@@ -1,0 +1,23 @@
+<tr>
+    <td>
+        <strong>{{ transaction.description }}</strong>
+    </td>
+    <td>{{ transaction.date|date('d/m/Y') }}</td>
+    <td>{% include 'components/_category_badge.html.twig' with {category: transaction.category} %}</td>
+    <td>
+        <span class="type-badge type-badge--{{ transaction.type.value }}">
+            {{ transaction.type.value == 'income' ? 'Entrata' : 'Uscita' }}
+        </span>
+    </td>
+    <td class="amount amount--{{ transaction.type.value }}">
+        {{ transaction.type.value == 'income' ? '+' : '-' }}{{ transaction.amount|number_format(2, ',', '.') }} €
+    </td>
+    <td class="actions">
+        <a class="button button--ghost button--small" href="{{ path('app_transactions_edit', {id: transaction.id}) }}">Modifica</a>
+        <form method="post" action="{{ path('app_transactions_delete', {id: transaction.id}) }}" data-confirm="Eliminare questa transazione?">
+            <input type="hidden" name="_method" value="DELETE">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete_transaction_' ~ transaction.id) }}">
+            <button type="submit" class="button button--danger button--small">Elimina</button>
+        </form>
+    </td>
+</tr>

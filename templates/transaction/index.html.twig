@@ -1,0 +1,120 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Transazioni | ContiApp{% endblock %}
+{% block page_title %}Transazioni{% endblock %}
+{% block page_subtitle %}Elenco completo dei movimenti con filtri per periodo, categoria e tipo.{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/forms.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/transactions.css') }}">
+{% endblock %}
+
+{% block body %}
+    <section class="panel">
+        <div class="panel__header">
+            <div>
+                <h2>Filtri</h2>
+                <p>Restringi l'elenco per mese, anno, categoria e natura del movimento.</p>
+            </div>
+            <a class="button button--primary" href="{{ path('app_transactions_new') }}">Nuova transazione</a>
+        </div>
+
+        <form method="get" class="filters-grid">
+            <label>
+                <span>Mese</span>
+                <select name="month">
+                    {% for monthNumber in 1..12 %}
+                        <option value="{{ monthNumber }}" {{ filters.month == monthNumber ? 'selected' : '' }}>
+                            {{ '%02d'|format(monthNumber) }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </label>
+
+            <label>
+                <span>Anno</span>
+                <select name="year">
+                    {% for yearOption in years %}
+                        <option value="{{ yearOption }}" {{ filters.year == yearOption ? 'selected' : '' }}>{{ yearOption }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+
+            <label>
+                <span>Categoria</span>
+                <select name="category">
+                    <option value="">Tutte</option>
+                    {% for category in categories %}
+                        <option value="{{ category.id }}" {{ filters.category == category.id ? 'selected' : '' }}>
+                            {{ category.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </label>
+
+            <label>
+                <span>Tipo</span>
+                <select name="type">
+                    <option value="">Tutti</option>
+                    <option value="income" {{ filters.type == 'income' ? 'selected' : '' }}>Entrata</option>
+                    <option value="expense" {{ filters.type == 'expense' ? 'selected' : '' }}>Uscita</option>
+                </select>
+            </label>
+
+            <div class="filters-grid__actions">
+                <button class="button button--primary" type="submit">Applica filtri</button>
+                <a class="button button--ghost" href="{{ path('app_transactions_index') }}">Reset</a>
+            </div>
+        </form>
+    </section>
+
+    <section class="panel">
+        <div class="panel__header">
+            <div>
+                <h2>Elenco movimenti</h2>
+                <p>{{ pagination.total }} risultati totali.</p>
+            </div>
+        </div>
+
+        <div class="table-wrapper">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Descrizione</th>
+                        <th>Data</th>
+                        <th>Categoria</th>
+                        <th>Tipo</th>
+                        <th>Importo</th>
+                        <th>Azioni</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for transaction in pagination.items %}
+                        {% include 'components/_transaction_row.html.twig' with {transaction: transaction} %}
+                    {% else %}
+                        <tr>
+                            <td colspan="6" class="empty-state">Nessuna transazione trovata con i filtri selezionati.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pagination">
+            {% set routeParams = {
+                month: filters.month,
+                year: filters.year,
+                category: filters.category,
+                type: filters.type
+            } %}
+            <a class="button button--ghost button--small {{ pagination.page <= 1 ? 'is-disabled' : '' }}" href="{{ pagination.page > 1 ? path('app_transactions_index', routeParams|merge({page: pagination.page - 1})) : '#' }}">Precedente</a>
+            <span>Pagina {{ pagination.page }} di {{ pagination.pages }}</span>
+            <a class="button button--ghost button--small {{ pagination.page >= pagination.pages ? 'is-disabled' : '' }}" href="{{ pagination.page < pagination.pages ? path('app_transactions_index', routeParams|merge({page: pagination.page + 1})) : '#' }}">Successiva</a>
+        </div>
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/confirm-delete.js') }}"></script>
+{% endblock %}

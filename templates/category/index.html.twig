@@ -1,0 +1,99 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Categorie | ContiApp{% endblock %}
+{% block page_title %}Categorie{% endblock %}
+{% block page_subtitle %}Gestisci il catalogo di classificazione per entrate e uscite.{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/forms.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/categories.css') }}">
+{% endblock %}
+
+{% block body %}
+    <section class="category-management">
+        <div class="panel category-management__create">
+            <div class="panel__header">
+                <div>
+                    <h2>Crea una categoria</h2>
+                    <p>Aggiungi velocemente una nuova categoria di entrata o uscita senza uscire dalla schermata di gestione.</p>
+                </div>
+            </div>
+
+            {% include 'category/_form.html.twig' with {
+                form: createForm,
+                submit_label: 'Crea categoria',
+                action: path('app_categories_new'),
+                show_cancel: false,
+                form_class: 'app-form app-form--compact'
+            } %}
+        </div>
+
+        <div class="category-management__stats">
+            <article class="summary-card summary-card--neutral">
+                <div class="summary-card__label">Categorie totali</div>
+                <div class="summary-card__value">{{ overview.total }}</div>
+                <div class="summary-card__meta">{{ overview.linkedTransactions }} transazioni collegate</div>
+            </article>
+            <article class="summary-card summary-card--income">
+                <div class="summary-card__label">Categorie entrata</div>
+                <div class="summary-card__value">{{ overview.income }}</div>
+                <div class="summary-card__meta">Disponibili per flussi positivi</div>
+            </article>
+            <article class="summary-card summary-card--expense">
+                <div class="summary-card__label">Categorie uscita</div>
+                <div class="summary-card__value">{{ overview.expense }}</div>
+                <div class="summary-card__meta">Disponibili per spese e costi</div>
+            </article>
+            <article class="summary-card summary-card--neutral">
+                <div class="summary-card__label">Categorie non usate</div>
+                <div class="summary-card__value">{{ overview.unused }}</div>
+                <div class="summary-card__meta">{{ overview.inUse }} gia in uso</div>
+            </article>
+        </div>
+    </section>
+
+    <section class="panel">
+        <div class="panel__header">
+            <div>
+                <h2>Catalogo categorie</h2>
+                <p>Da qui puoi modificare o eliminare ogni categoria. L'eliminazione resta bloccata se esistono transazioni associate.</p>
+            </div>
+            <a class="button button--primary" href="{{ path('app_categories_new') }}">Nuova categoria</a>
+        </div>
+
+        <div class="category-grid">
+            {% for row in categories %}
+                {% set category = row.category %}
+                <article class="category-card">
+                    <div class="category-card__header">
+                        {% include 'components/_category_badge.html.twig' with {category: category} %}
+                        <span class="type-badge type-badge--{{ category.type.value }}">
+                            {{ category.type.value == 'income' ? 'Entrata' : 'Uscita' }}
+                        </span>
+                    </div>
+
+                    <div class="category-card__meta">
+                        <span>Icona: {{ category.icon ?: 'n/d' }}</span>
+                        <span>{{ row.transactionCount }} transazioni</span>
+                    </div>
+
+                    <div class="category-card__actions">
+                        <a class="button button--ghost button--small" href="{{ path('app_categories_edit', {id: category.id}) }}">Modifica</a>
+                        <form method="post" action="{{ path('app_categories_delete', {id: category.id}) }}" data-confirm="Eliminare questa categoria?">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete_category_' ~ category.id) }}">
+                            <button type="submit" class="button button--danger button--small" {{ row.transactionCount > 0 ? 'disabled' : '' }}>Elimina</button>
+                        </form>
+                    </div>
+                </article>
+            {% else %}
+                <div class="empty-state-panel">Non hai ancora creato categorie.</div>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/confirm-delete.js') }}"></script>
+{% endblock %}

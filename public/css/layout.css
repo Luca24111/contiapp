@@ -1,0 +1,113 @@
+.app-shell {
+    display: grid;
+    grid-template-columns: 300px minmax(0, 1fr);
+    min-height: 100vh;
+}
+
+.sidebar {
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    min-height: 100vh;
+    padding: 2rem 1.5rem;
+    color: #e2e8f0;
+    background: var(--bg-sidebar);
+}
+
+.sidebar__brand {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.sidebar__brand strong {
+    display: block;
+    font-size: 1.1rem;
+}
+
+.sidebar__brand small {
+    color: rgba(226, 232, 240, 0.7);
+}
+
+.sidebar__brand-mark {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 1rem;
+    background: linear-gradient(135deg, #38bdf8, #22c55e);
+    color: #fff;
+    font-weight: 800;
+}
+
+.sidebar__nav {
+    display: grid;
+    gap: 0.5rem;
+}
+
+.sidebar__nav a {
+    padding: 0.95rem 1rem;
+    border-radius: 1rem;
+    color: rgba(226, 232, 240, 0.82);
+    transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.sidebar__nav a:hover,
+.sidebar__nav a.is-active {
+    color: #fff;
+    background: rgba(148, 163, 184, 0.14);
+    transform: translateX(4px);
+}
+
+.sidebar__panel {
+    display: grid;
+    gap: 0.8rem;
+    padding: 1.2rem;
+    border: 1px solid rgba(148, 163, 184, 0.15);
+    border-radius: 1.35rem;
+    background: rgba(15, 23, 42, 0.35);
+}
+
+.sidebar__panel-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(226, 232, 240, 0.72);
+}
+
+.app-main {
+    padding: 2rem;
+}
+
+.topbar {
+    margin-bottom: var(--space-4);
+}
+
+.content {
+    display: grid;
+    gap: var(--space-4);
+}
+
+@media (max-width: 1080px) {
+    .app-shell {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+        position: relative;
+        min-height: auto;
+    }
+}
+
+@media (max-width: 640px) {
+    .app-main {
+        padding: 1rem;
+    }
+
+    .sidebar {
+        padding: 1.2rem;
+    }
+}

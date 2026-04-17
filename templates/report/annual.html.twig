@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Report annuale | ContiApp{% endblock %}
+{% block page_title %}Report annuale{% endblock %}
+{% block page_subtitle %}Vista consolidata dell'anno {{ year }} con comparazione mensile e saldo progressivo.{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/reports.css') }}">
+{% endblock %}
+
+{% block body %}
+    <section class="report-toolbar">
+        <a class="button button--ghost" href="{{ path('app_reports_annual', {year: previousYear}) }}">Anno precedente</a>
+        <div class="report-toolbar__title">{{ year }}</div>
+        <a class="button button--ghost" href="{{ path('app_reports_annual', {year: nextYear}) }}">Anno successivo</a>
+    </section>
+
+    <section class="dashboard-grid">
+        {% include 'components/_summary_card.html.twig' with {
+            label: 'Entrate annuali',
+            value: summary.income,
+            meta: 'Somma delle entrate dei 12 mesi',
+            variant: 'income'
+        } %}
+        {% include 'components/_summary_card.html.twig' with {
+            label: 'Uscite annuali',
+            value: summary.expense,
+            meta: 'Somma delle uscite dei 12 mesi',
+            variant: 'expense'
+        } %}
+        {% include 'components/_summary_card.html.twig' with {
+            label: 'Saldo annuale',
+            value: summary.balance,
+            meta: 'Performance complessiva dell\'anno',
+            variant: summary.balance >= 0 ? 'neutral' : 'expense'
+        } %}
+    </section>
+
+    <section class="reports-grid reports-grid--stacked">
+        {% include 'components/_chart_container.html.twig' with {
+            id: 'report-annual-stacked',
+            title: 'Entrate vs uscite per mese',
+            subtitle: 'Confronto stacked sui 12 mesi',
+            chart_config: {
+                type: 'bar',
+                data: annualStackedChart,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { stacked: true },
+                        y: {
+                            stacked: true,
+                            beginAtZero: true,
+                            ticks: { callback: 'currency' }
+                        }
+                    }
+                }
+            }
+        } %}
+
+        {% include 'components/_chart_container.html.twig' with {
+            id: 'report-annual-cumulative',
+            title: 'Saldo cumulativo progressivo',
+            subtitle: 'Linea di andamento del bilancio lungo l\'anno',
+            chart_config: {
+                type: 'line',
+                data: annualCumulativeChart,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            ticks: { callback: 'currency' }
+                        }
+                    }
+                }
+            }
+        } %}
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('vendor/chartjs/chart.umd.min.js') }}"></script>
+    <script src="{{ asset('js/charts.js') }}"></script>
+{% endblock %}

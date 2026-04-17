@@ -1,0 +1,19 @@
+<section class="chart-card">
+    <header class="chart-card__header">
+        <div>
+            <h3>{{ title }}</h3>
+            {% if subtitle is defined and subtitle %}
+                <p>{{ subtitle }}</p>
+            {% endif %}
+        </div>
+    </header>
+    <div class="chart-card__body">
+        <div class="chart-card__loader" data-chart-loader>Caricamento grafico...</div>
+        <canvas
+            id="{{ id }}"
+            data-chart-config-id="{{ id }}-config"
+            {% if chart_height is defined %}height="{{ chart_height }}"{% endif %}
+        ></canvas>
+        <script type="application/json" id="{{ id }}-config">{{ chart_config|json_encode(constant('JSON_UNESCAPED_UNICODE'))|raw }}</script>
+    </div>
+</section>

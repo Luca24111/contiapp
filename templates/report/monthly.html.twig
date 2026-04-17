@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Report mensile | ContiApp{% endblock %}
+{% block page_title %}Report mensile{% endblock %}
+{% block page_subtitle %}Analisi dettagliata del mese {{ periodLabel }} con distribuzione per categoria e andamento giornaliero.{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/reports.css') }}">
+{% endblock %}
+
+{% block body %}
+    <section class="report-toolbar">
+        <a class="button button--ghost" href="{{ path('app_reports_monthly', previousPeriod) }}">Mese precedente</a>
+        <div class="report-toolbar__title">{{ periodLabel }}</div>
+        <a class="button button--ghost" href="{{ path('app_reports_monthly', nextPeriod) }}">Mese successivo</a>
+    </section>
+
+    <section class="dashboard-grid">
+        {% include 'components/_summary_card.html.twig' with {
+            label: 'Entrate del mese',
+            value: summary.income,
+            meta: 'Totale registrato',
+            variant: 'income'
+        } %}
+        {% include 'components/_summary_card.html.twig' with {
+            label: 'Uscite del mese',
+            value: summary.expense,
+            meta: 'Costo complessivo',
+            variant: 'expense'
+        } %}
+        {% include 'components/_summary_card.html.twig' with {
+            label: 'Saldo del mese',
+            value: summary.balance,
+            meta: 'Impatto netto',
+            variant: summary.balance >= 0 ? 'neutral' : 'expense'
+        } %}
+    </section>
+
+    <section class="reports-grid">
+        {% include 'components/_chart_container.html.twig' with {
+            id: 'report-monthly-pie',
+            title: 'Incidenza spese per categoria',
+            subtitle: 'Distribuzione percentuale delle uscite',
+            chart_config: {
+                type: 'pie',
+                data: expenseDistributionChart,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                afterLabel: 'expenseShareOfTotal'
+                            }
+                        },
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            }
+        } %}
+
+        {% include 'components/_chart_container.html.twig' with {
+            id: 'report-monthly-daily',
+            title: 'Andamento giornaliero',
+            subtitle: 'Entrate e uscite giorno per giorno',
+            chart_config: {
+                type: 'bar',
+                data: dailyTransactionsChart,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { callback: 'currency' }
+                        }
+                    }
+                }
+            }
+        } %}
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('vendor/chartjs/chart.umd.min.js') }}"></script>
+    <script src="{{ asset('js/charts.js') }}"></script>
+{% endblock %}

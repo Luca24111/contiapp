@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ContiApp{% endblock %}</title>
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('css/base.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/layout.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/components.css') }}">
+    {% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+    {% set currentRoute = app.request.attributes.get('_route') %}
+    <div class="app-shell">
+        <aside class="sidebar">
+            <a class="sidebar__brand" href="{{ path('app_dashboard') }}">
+                <span class="sidebar__brand-mark">C</span>
+                <span>
+                    <strong>ContiApp</strong>
+                    <small>Personal finance dashboard</small>
+                </span>
+            </a>
+
+            <nav class="sidebar__nav">
+                <a href="{{ path('app_dashboard') }}" class="{{ currentRoute == 'app_dashboard' ? 'is-active' : '' }}">Dashboard</a>
+                <a href="{{ path('app_transactions_index') }}" class="{{ currentRoute starts with 'app_transactions_' ? 'is-active' : '' }}">Transazioni</a>
+                <a href="{{ path('app_categories_index') }}" class="{{ currentRoute starts with 'app_categories_' ? 'is-active' : '' }}">Categorie</a>
+                <a href="{{ path('app_reports_monthly', {year: 'now'|date('Y'), month: 'now'|date('m')}) }}" class="{{ currentRoute == 'app_reports_monthly' ? 'is-active' : '' }}">Report mensile</a>
+                <a href="{{ path('app_reports_annual', {year: 'now'|date('Y')}) }}" class="{{ currentRoute == 'app_reports_annual' ? 'is-active' : '' }}">Report annuale</a>
+            </nav>
+
+            <div class="sidebar__panel">
+                <span class="sidebar__panel-label">Azioni rapide</span>
+                <a class="button button--quick button--quick-primary button--block" href="{{ path('app_transactions_new') }}">Nuova transazione</a>
+                <a class="button button--quick button--quick-secondary button--block" href="{{ path('app_categories_new') }}">Nuova categoria</a>
+            </div>
+        </aside>
+
+        <div class="app-main">
+            <header class="topbar">
+                <div>
+                    <p class="eyebrow">{% block page_eyebrow %}Gestione finanziaria personale{% endblock %}</p>
+                    <h1>{% block page_title %}ContiApp{% endblock %}</h1>
+                    <p class="page-subtitle">{% block page_subtitle %}Monitora entrate, uscite e andamento dei tuoi conti in un unico spazio.{% endblock %}</p>
+                </div>
+            </header>
+
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="flash flash--{{ label }}">{{ message }}</div>
+                {% endfor %}
+            {% endfor %}
+
+            <main class="content">
+                {% block body %}{% endblock %}
+            </main>
+        </div>
+    </div>
+
+    {% block javascripts %}{% endblock %}
+</body>
+</html>
