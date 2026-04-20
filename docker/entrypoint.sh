@@ -71,5 +71,8 @@ envsubst '${PORT}' \
 
 nginx -t || error_exit "Configurazione Nginx non valida"
 
+log "Contenuto default.conf generato:"
+cat /etc/nginx/http.d/default.conf
+
 log "Avvio supervisor"
 exec supervisord -c /etc/supervisor/conf.d/supervisord.conf
