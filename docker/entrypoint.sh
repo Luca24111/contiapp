@@ -65,6 +65,7 @@ php bin/console doctrine:migrations:migrate \
     --allow-no-migration \
     || error_exit "Migrazioni fallite"
 
+cp /etc/nginx/http.d/default.conf /etc/nginx/http.d/default.conf.bak
 envsubst '${PORT}' \
     < /etc/nginx/http.d/default.conf.bak \
     > /etc/nginx/http.d/default.conf
