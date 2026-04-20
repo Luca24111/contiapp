@@ -1,0 +1,2 @@
+twig:
+    cache: '%kernel.build_dir%/twig'

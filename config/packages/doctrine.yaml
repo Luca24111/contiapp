@@ -5,7 +5,7 @@ doctrine:
         use_savepoints: true
 
     orm:
-        auto_generate_proxy_classes: true
+        auto_generate_proxy_classes: '%kernel.debug%'
         enable_lazy_ghost_objects: true
         report_fields_where_declared: true
         validate_xml_mapping: true
@@ -22,3 +22,10 @@ when@test:
     doctrine:
         dbal:
             dbname_suffix: '_test%env(default::TEST_TOKEN)%'
+
+when@prod:
+    doctrine:
+        dbal:
+            options:
+                !php/const PDO::MYSQL_ATTR_SSL_CA: '%env(default::MYSQL_SSL_CA)%'
+                !php/const PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT: true

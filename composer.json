@@ -1,4 +1,6 @@
 {
+    "name": "luca-vignoli/contiapp",
+    "description": "Symfony 6.4 application for personal finance tracking and reporting.",
     "type": "project",
     "license": "proprietary",
     "minimum-stability": "stable",
@@ -7,6 +9,9 @@
         "php": ">=8.1",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "ext-intl": "*",
+        "ext-pdo": "*",
+        "ext-pdo_mysql": "*",
         "doctrine/dbal": "^3",
         "doctrine/doctrine-bundle": "^2.13",
         "doctrine/doctrine-migrations-bundle": "^3.4",
@@ -31,6 +36,10 @@
         "symfony/maker-bundle": "^1.62"
     },
     "config": {
+        "optimize-autoloader": true,
+        "preferred-install": {
+            "*": "dist"
+        },
         "allow-plugins": {
             "php-http/discovery": true,
             "symfony/flex": true,
@@ -62,6 +71,17 @@
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
         },
+        "check:prod": [
+            "@php bin/console lint:twig templates --env=prod",
+            "@php bin/console lint:container --env=prod"
+        ],
+        "deploy": [
+            "@composer install --no-dev --optimize-autoloader --no-interaction",
+            "@php bin/console doctrine:migrations:migrate --no-interaction --env=prod --allow-no-migration",
+            "@php bin/console cache:clear --env=prod --no-debug",
+            "@php bin/console cache:warmup --env=prod --no-debug"
+        ],
+        "cache:warmup:prod": "@php bin/console cache:warmup --env=prod --no-debug",
         "post-install-cmd": [
             "@auto-scripts"
         ],
