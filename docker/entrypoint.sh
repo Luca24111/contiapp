@@ -66,7 +66,7 @@ php bin/console doctrine:migrations:migrate \
     || error_exit "Migrazioni fallite"
 
 envsubst '${PORT}' \
-    < /etc/nginx/http.d/default.conf.template \
+    < /etc/nginx/http.d/default.conf.bak \
     > /etc/nginx/http.d/default.conf
 
 nginx -t || error_exit "Configurazione Nginx non valida"
