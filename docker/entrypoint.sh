@@ -65,10 +65,8 @@ php bin/console doctrine:migrations:migrate \
     --allow-no-migration \
     || error_exit "Migrazioni fallite"
 
-cp /etc/nginx/http.d/default.conf /etc/nginx/http.d/default.conf.bak
-envsubst '${PORT}' \
-    < /etc/nginx/http.d/default.conf.bak \
-    > /etc/nginx/http.d/default.conf
+log "Configurazione porta Nginx: ${PORT}"
+sed -i "s/\${PORT}/${PORT}/g" /etc/nginx/http.d/default.conf
 
 nginx -t || error_exit "Configurazione Nginx non valida"
 
