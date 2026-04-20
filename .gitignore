@@ -32,3 +32,4 @@ credentials*.json
 google-services.json
 auth.json
 phpunit.xml
+.env.prod
