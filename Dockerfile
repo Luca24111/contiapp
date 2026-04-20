@@ -71,7 +71,7 @@ RUN { \
 
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 COPY docker/nginx/nginx.conf /etc/nginx/nginx.conf
-COPY docker/nginx/default.conf.conf /etc/nginx/http.d/default.conf
+COPY docker/nginx/default.conf /etc/nginx/http.d/default.conf
 COPY docker/supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 WORKDIR /var/www/html
